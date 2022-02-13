@@ -1,247 +1,163 @@
-\documentclass[12pt]{article}
-\usepackage{graphicx}
-\usepackage[section]{placeins}
-\usepackage[section]{placeins}
-\usepackage[section]{placeins}
-\usepackage[section]{placeins}
-\usepackage[section]{placeins}
-\usepackage{float}
-\usepackage{siunitx}
 %
-% Title[Enter title of the experiment here]
-\title{EE230: Lab 5\\
-Applications of Op-Amp}
+% This is the LaTeX template file for lecture notes for CS294-8,
+% Computational Biology for Computer Scientists.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi.
+%
+% This template is based on the template for Prof. Sinclair's CS 270.
 
-% Packages
-\usepackage[RPvoltages]{circuitikz}
- 
- 
+\documentclass[11pt, twosides]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{float}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+%   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf CS 419M Introduction to Machine Learning
+                        \hfill Spring 2021-22} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribe: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+}
+
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+% \renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+% \newcommand{\fig}[3]{
+% 			\vspace{#2}
+% 			\begin{center}
+% 			Figure \thelecnum.#1:~#3
+% 			\end{center}
+% 	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+% \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% ** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
 \begin{document}
- 
-
-% Author[Enter details of author here]
-\author{Vinayak Goyal, 20D070088}
-
-% begin the document.
-\begin{document}
-
-% make a title page.[this creates title page]
-\maketitle
+%FILL IN THE RIGHT INFO.
+%\lecture{*LECTURE-NUMBER}{DATE}{LECTURER}{SCRIBE*}
+\lecture{8}{Classification}{Abir De}{Group 2}
+%\lecture{x}{Title}{Abir De}{Group y}
 
 
-
-\section{Overview of the experiment} %[This segment creates Section as seen in document]
-
-\subsection{Aim of the experiment}%[This segment creates sebsections under the same section]
-To perform NGSpice simulations for different applications of Op-Amp namely Photodiode and Instrumentation Amplifier
-
-
-
-\section{Design}
-\subsection{Photo Diode}
-Analyzing the photodiode circuit using OpAmp- LM324 and performing the DC and AC analysis using the current source $I_{i}$ and to find the bandwith.
-\begin{figure}[H]
-\centering
-\caption{BJT circuit}
-\includegraphics[scale = 0.5]{WhatsApp Image 2022-02-13 at 7.04.56 PM.jpeg}
-\end{figure}
-\subsection{Instrumentaion Amplifier}
-Analyzing the Instrumentation Amplifier circuit using 3 OpAmp -UA741 and first finding the differential gain then doing DC and transient analysis for $V_{out}$ and differential input
-
-\begin{figure}[H]
-\centering
-\caption{BJT circuit}
-\includegraphics[scale = 0.5]{instrumentation.eps}
-\end{figure}
+\section{Topics covered in lecture}
+\label{Sec:1}
+\begin{enumerate}
+    \item Stabilty of classifier at high level
+\end{enumerate}
 
 
-\section{Simulation results}%[One more section]
-\subsection{Code snippet}
-\subsubsection{Photodiode}
-\subsubsubsection{DC analysis}
-\begin{verbatim}
-LM324
-.include lm324.txt
-x1 3 1 4 5 2 LM324
-r2 1 4 13.7k
-r1 3 2 1.4Meg
-r3 1 0 280
-vref 1 0 0.1
-i1 3 0
-cj 3 0 11p
-c2 1 0 1u
-c1 3 2 3.3p
-Vccp 4 0 5
-vccn 5 0 -5
+\section{Optimisation Solving}
+\label{Sec:2}
+\begin{align*}
+   & P_m(y \mid x) = \frac{1}{1+e^{-w^Tx\cdot y}} \\
+  \implies  &\max_{w} \prod_{i \in \mathcal{D}} P_m(y_i \mid x_i) \\
+  \implies  &\max_{w} \sum_{i \in \mathcal{D}} \log{P_m(y_i \mid x_i)}\\
+\implies    &\min_{w} \sum_{i \in mathcal{D}} \log{\left(1+e^{w^Tx_i \cdot y_i}\right)}\\
+ &P(y=1)= P(x) \implies P(wP_x)\\
+ &y(y=-1)=1- P(wP_x)\\
+ &1> P(wP_x)>0 \implies P(y=1) = \frac{1}{1+e^{-w^Tx}}\\
+ &1-P(y=1) = \frac{1}{1+e^{w^Tx}}
+\end{align*}
 
 
-.dc i1 0 2.4u 0.1u
-.control
-run
-plot v(2)
-
-.endc
-.end
-\end{verbatim}
-
-    \subsubsubsection{AC analysis}
-    
-\begin{verbatim}
-
-LM324
-.include lm324.txt
-x1 3 1 4 5 2 LM324
-r2 1 4 13.7k
-r1 3 2 1.4Meg
-r3 1 0 280
-vref 1 0 0.1
-i1 3 0 dc 1.5u ac 1
-cj 3 0 11p
-c2 1 0 1u
-c1 3 2 3.3p
-Vccp 4 0 5
-vccn 5 0 -5
-
-
-.ac dec 10 10 100Meg
-.control
-run
-plot vdb(2) xlog
-
-.endc
-.end
-
-\end{verbatim}
-\subsubsection{BJT}
-\subsubsubsection{DC analysis}
-\begin{verbatim}
-UA741a
-.include ua741.txt
-x1 3 1 4 5 2 UA741
-x2 6 7 4 5 8 UA741
-x3 9 10 4 5 11 UA741
-vcm 13 0
-r2 10 11 10k
-r1 2 10 10k
-r3 8 9 10k
-r4 9 12 10k
-r5 7 8 10k
-r6 1 2 10k
-r10 1 7 2.21k
-vref 12 0 0
-vi1 13 3 0
-vi2 6 13 0
-Vccp 4 0 15
-Vccn 5 0 -15
-
-.dc vcm -2 2 0.1
-.control
-run
-plot v(11)
-
-.endc
-.end
-
-\end{verbatim}
-\subsubsubsection{Transient analysis}
-\begin{verbatim}
-UA741a
-.include ua741.txt
-x1 3 1 4 5 2 UA741
-x2 6 7 4 5 8 UA741
-x3 9 10 4 5 11 UA741
-vcm 13 0
-r2 10 11 10k
-r1 2 10 10k
-r3 8 9 10k
-r4 9 12 10k
-r5 7 8 10k
-r6 1 2 10k
-r10 1 7 2.21k
-vi1 13 3 sin (0 250mv 1k 0 0)
-vi2 13 6 sin (0 -250mv 1k 0 0)
-Vccp 4 0 15
-Vccn 5 0 -15
-
-.tran 0.02ms 20ms
-.control
-run
-plot v(3)-v(6) v(11)
-
-.endc
-.end
-
-\end{verbatim}
-\subsection{Simulation results}
-
-\subsection{Photodiode}
-
-
-\begin{figure}[H]
-\centering
-\caption{V vs i_sweep}
-\includegraphics[scale = 0.8]{q1apy.png}
-\end{figure}
-\begin{figure}[H]
-\centering
-\caption{vdb vs freq}
-\includegraphics[scale = 0.8]{q1bpy.png}
-\end{figure}
-
-
-\subsection{Instrumentation Amplifier}
-\begin{figure}[H]
-\centering
-\caption{Vout vs Vcm}
-\includegraphics[scale = 0.8]{q2bpy.png}
-\end{figure}
-\begin{figure}[H]
-\centering
-\caption{Vinp vs time}
-\includegraphics[scale = 0.6]{q2cpy.png}
-\end{figure}
-
-
-\section{Theoretical observation}
-\subsection{Photodiode Amplifier Circuit}
-\begin{table}[!hbt]
-	\begin{center}
-	\caption{Values\\}
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\bf{Parameter} & \bf{Theoretical} & \bf{Measured}\\
-		\hline
-        $V_{out} [I_1=0 uA]$ & 0.1V & $0.07\ V$\\
-		\hline
-        $V_{out} [I_1=2.4 uA]$  & $3.47\ V$ & $3.42\ V$\\
-		\hline
-       $\frac{\partial V}{\partial t}(=R1)$ & $1.4M\Omega$ & $1.38M\Omega\ $\\
-		
-		\hline
-        $\beta(=f_{3-db})$ & $34.45$ & $37.35$  \\
-		\hline
-       
-	\end{tabular}
-	\end{center}
+\section{In Case of Multiple Classifications}
+\label{Sec:3}
+    \begin{align*}
+        &P(y=i) = P_i=f(w_i^Tx)\\
+        &P_i=\frac{e^{w_iTx}}{\sum_{j} e^{-w_j^Tx}}\\
+        &P(y=1) = \frac{1}{1+e^{-w_1^Tx}}\\
+        &P(y=-1) = \frac{1}{1+e^{w_1^Tx}}\\
+    \end{align*}
+\section{Problem Caused by Outliers}
+\label{Sec:4}
+\item Not Robust to Outliers- Shift in hyperplane varies highly.
+\item Generalization issues
+\item Can cause privacy issues in real life problems- If there is a huge shift in hyperplane by adding one extra point, then by help of Reverse Engineering the information of that point can be found out and thus giving up privacy.
+\section{Group Details and Individual Contribution}
+% Fill this part
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+     \hline
+        Name & Roll number & contribution \\
+        \hline
+        Vinayak Goyal & 20D070088 & \ref{Sec:1},\ref{Sec:2},\ref{Sec:3},\ref{Sec:4}\\
+        \hline
+        Rituraj Chaudhari & 20D070065 &\ref{Sec:1},\ref{Sec:2},\ref{Sec:3},\ref{Sec:4}\\
+    \hline
+    \end{tabular}
+    % \caption{Caption}
+    \label{tab:my_label}
 \end{table}
-\subsection{ 3 op-amp based Instrumentation Amplifier}
-\begin{table}[!hbt]
-	\begin{center}
-	\caption{Values\\}
-	\begin{tabular}{|c|c|c|}
-		\hline
-		\bf{Parameter} & \bf{Theoretical} & \bf{Measured}\\
-		\hline
-        $\frac{V_{out}}{(V_{i1}-V_{i2})}$ & -10.04 & $-10.02\ V$\\
-		\hline
-        $V_{out} [V_{cm}= -2V]$  & $0\ V$ & $102\mu$\\
-		\hline
-       $V_{out} [V_{cm}= 2V]$ & $0\ V$ & $-25\mu$\\
-		
-		\hline
-    
-	\end{tabular}
-	\end{center}
-\end{table}
-\end{document}
 \end{document}
