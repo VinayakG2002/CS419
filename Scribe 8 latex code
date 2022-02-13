@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage[section]{placeins}
+\usepackage[section]{placeins}
+\usepackage[section]{placeins}
+\usepackage[section]{placeins}
+\usepackage[section]{placeins}
+\usepackage{float}
+\usepackage{siunitx}
+%
+% Title[Enter title of the experiment here]
+\title{EE230: Lab 5\\
+Applications of Op-Amp}
+
+% Packages
+\usepackage[RPvoltages]{circuitikz}
+ 
+ 
+\begin{document}
+ 
+
+% Author[Enter details of author here]
+\author{Vinayak Goyal, 20D070088}
+
+% begin the document.
+\begin{document}
+
+% make a title page.[this creates title page]
+\maketitle
+
+
+
+\section{Overview of the experiment} %[This segment creates Section as seen in document]
+
+\subsection{Aim of the experiment}%[This segment creates sebsections under the same section]
+To perform NGSpice simulations for different applications of Op-Amp namely Photodiode and Instrumentation Amplifier
+
+
+
+\section{Design}
+\subsection{Photo Diode}
+Analyzing the photodiode circuit using OpAmp- LM324 and performing the DC and AC analysis using the current source $I_{i}$ and to find the bandwith.
+\begin{figure}[H]
+\centering
+\caption{BJT circuit}
+\includegraphics[scale = 0.5]{WhatsApp Image 2022-02-13 at 7.04.56 PM.jpeg}
+\end{figure}
+\subsection{Instrumentaion Amplifier}
+Analyzing the Instrumentation Amplifier circuit using 3 OpAmp -UA741 and first finding the differential gain then doing DC and transient analysis for $V_{out}$ and differential input
+
+\begin{figure}[H]
+\centering
+\caption{BJT circuit}
+\includegraphics[scale = 0.5]{instrumentation.eps}
+\end{figure}
+
+
+\section{Simulation results}%[One more section]
+\subsection{Code snippet}
+\subsubsection{Photodiode}
+\subsubsubsection{DC analysis}
+\begin{verbatim}
+LM324
+.include lm324.txt
+x1 3 1 4 5 2 LM324
+r2 1 4 13.7k
+r1 3 2 1.4Meg
+r3 1 0 280
+vref 1 0 0.1
+i1 3 0
+cj 3 0 11p
+c2 1 0 1u
+c1 3 2 3.3p
+Vccp 4 0 5
+vccn 5 0 -5
+
+
+.dc i1 0 2.4u 0.1u
+.control
+run
+plot v(2)
+
+.endc
+.end
+\end{verbatim}
+
+    \subsubsubsection{AC analysis}
+    
+\begin{verbatim}
+
+LM324
+.include lm324.txt
+x1 3 1 4 5 2 LM324
+r2 1 4 13.7k
+r1 3 2 1.4Meg
+r3 1 0 280
+vref 1 0 0.1
+i1 3 0 dc 1.5u ac 1
+cj 3 0 11p
+c2 1 0 1u
+c1 3 2 3.3p
+Vccp 4 0 5
+vccn 5 0 -5
+
+
+.ac dec 10 10 100Meg
+.control
+run
+plot vdb(2) xlog
+
+.endc
+.end
+
+\end{verbatim}
+\subsubsection{BJT}
+\subsubsubsection{DC analysis}
+\begin{verbatim}
+UA741a
+.include ua741.txt
+x1 3 1 4 5 2 UA741
+x2 6 7 4 5 8 UA741
+x3 9 10 4 5 11 UA741
+vcm 13 0
+r2 10 11 10k
+r1 2 10 10k
+r3 8 9 10k
+r4 9 12 10k
+r5 7 8 10k
+r6 1 2 10k
+r10 1 7 2.21k
+vref 12 0 0
+vi1 13 3 0
+vi2 6 13 0
+Vccp 4 0 15
+Vccn 5 0 -15
+
+.dc vcm -2 2 0.1
+.control
+run
+plot v(11)
+
+.endc
+.end
+
+\end{verbatim}
+\subsubsubsection{Transient analysis}
+\begin{verbatim}
+UA741a
+.include ua741.txt
+x1 3 1 4 5 2 UA741
+x2 6 7 4 5 8 UA741
+x3 9 10 4 5 11 UA741
+vcm 13 0
+r2 10 11 10k
+r1 2 10 10k
+r3 8 9 10k
+r4 9 12 10k
+r5 7 8 10k
+r6 1 2 10k
+r10 1 7 2.21k
+vi1 13 3 sin (0 250mv 1k 0 0)
+vi2 13 6 sin (0 -250mv 1k 0 0)
+Vccp 4 0 15
+Vccn 5 0 -15
+
+.tran 0.02ms 20ms
+.control
+run
+plot v(3)-v(6) v(11)
+
+.endc
+.end
+
+\end{verbatim}
+\subsection{Simulation results}
+
+\subsection{Photodiode}
+
+
+\begin{figure}[H]
+\centering
+\caption{V vs i_sweep}
+\includegraphics[scale = 0.8]{q1apy.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\caption{vdb vs freq}
+\includegraphics[scale = 0.8]{q1bpy.png}
+\end{figure}
+
+
+\subsection{Instrumentation Amplifier}
+\begin{figure}[H]
+\centering
+\caption{Vout vs Vcm}
+\includegraphics[scale = 0.8]{q2bpy.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\caption{Vinp vs time}
+\includegraphics[scale = 0.6]{q2cpy.png}
+\end{figure}
+
+
+\section{Theoretical observation}
+\subsection{Photodiode Amplifier Circuit}
+\begin{table}[!hbt]
+	\begin{center}
+	\caption{Values\\}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\bf{Parameter} & \bf{Theoretical} & \bf{Measured}\\
+		\hline
+        $V_{out} [I_1=0 uA]$ & 0.1V & $0.07\ V$\\
+		\hline
+        $V_{out} [I_1=2.4 uA]$  & $3.47\ V$ & $3.42\ V$\\
+		\hline
+       $\frac{\partial V}{\partial t}(=R1)$ & $1.4M\Omega$ & $1.38M\Omega\ $\\
+		
+		\hline
+        $\beta(=f_{3-db})$ & $34.45$ & $37.35$  \\
+		\hline
+       
+	\end{tabular}
+	\end{center}
+\end{table}
+\subsection{ 3 op-amp based Instrumentation Amplifier}
+\begin{table}[!hbt]
+	\begin{center}
+	\caption{Values\\}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\bf{Parameter} & \bf{Theoretical} & \bf{Measured}\\
+		\hline
+        $\frac{V_{out}}{(V_{i1}-V_{i2})}$ & -10.04 & $-10.02\ V$\\
+		\hline
+        $V_{out} [V_{cm}= -2V]$  & $0\ V$ & $102\mu$\\
+		\hline
+       $V_{out} [V_{cm}= 2V]$ & $0\ V$ & $-25\mu$\\
+		
+		\hline
+    
+	\end{tabular}
+	\end{center}
+\end{table}
+\end{document}
+\end{document}
